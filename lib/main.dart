@@ -30,6 +30,7 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
   QuestionBrain qb = new QuestionBrain();
   String currentQuestion = '';
+  String lastAnswerExplanation ='';
   var focusNode = new FocusNode();
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -53,14 +54,18 @@ class _QuizPageState extends State<QuizPage> {
           color: Colors.red,
         ));
       }
-      getQuestion();
+      loadQuestion();
     });
   }
 
-  String getQuestion(){
-    focusNode.requestFocus();
-    return qb.getQuestion();
-
+  String loadQuestion(){
+    if (currentQuestion.isNotEmpty){
+      focusNode.requestFocus();
+      lastAnswerExplanation=qb.explainLastAnswer();
+      print(lastAnswerExplanation);
+    }
+    currentQuestion = qb.getQuestion();
+    return currentQuestion;
   }
 
   @override
@@ -77,7 +82,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Center(
               child: Text(
 
-                getQuestion(),
+                loadQuestion(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 40.0,
@@ -93,7 +98,7 @@ class _QuizPageState extends State<QuizPage> {
             width: 100.0,
             child: TextField(
               style: TextStyle(
-                  fontSize: 30.0,
+                  fontSize: 25.0,
                   height: 2.0,
                   color: Colors.black
               ),
@@ -107,8 +112,10 @@ class _QuizPageState extends State<QuizPage> {
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
               onSubmitted: (term) {
-                evaluateAnswer(int.parse( myController.text));
-                myController.clear();
+                if(myController.text.isNotEmpty) {
+                  evaluateAnswer(int.parse(myController.text));
+                  myController.clear();
+                }
               },
               inputFormatters: <TextInputFormatter>[
                 WhitelistingTextInputFormatter.digitsOnly
@@ -117,32 +124,33 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              color: Colors.green,
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                evaluateAnswer(int.parse( myController.text));
-                myController.clear();
-                //The user picked false.
-              },
-            ),
-          ),
-        ),
-        Row(children: scoreKeeper),
+//        Expanded(
+//          flex: 2,
+//          child: Padding(
+//            padding: EdgeInsets.all(15.0),
+//            child: FlatButton(
+//              color: Colors.green,
+//              child: Text(
+//                'Submit',
+//                style: TextStyle(
+//                  fontSize: 20.0,
+//                  color: Colors.white,
+//                ),
+//              ),
+//              onPressed: () {
+//                evaluateAnswer(int.parse( myController.text));
+//                myController.clear();
+//                //The user picked false.
+//              },
+//            ),
+//          ),
+//        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(child: Text(qb.explainAnswer())),
+          child: Center(child: Text(
+              lastAnswerExplanation)),
         ),
+        Row(children: scoreKeeper),
       ],
     );
 

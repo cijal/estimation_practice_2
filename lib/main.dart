@@ -80,41 +80,45 @@ class _QuizPageState extends State<QuizPage> {
                 getQuestion(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 30.0,
+                  fontSize: 40.0,
                   // color: Colors.white,
                 ),
               ),
             ),
           ),
         ),
-        Container(
-          width: 100.0,
-          child: TextField(
-            style: TextStyle(
-                fontSize: 30.0,
-                height: 2.0,
-                color: Colors.black
-            ),
-            focusNode: focusNode,
-            controller: myController,
-            decoration: new InputDecoration(
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            width: 100.0,
+            child: TextField(
+              style: TextStyle(
+                  fontSize: 30.0,
+                  height: 2.0,
+                  color: Colors.black
+              ),
+              focusNode: focusNode,
+              controller: myController,
+              decoration: new InputDecoration(
 
-                border: const OutlineInputBorder(),
-                labelText: "You answer in Millions",
-                fillColor: Colors.white),
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            onSubmitted: (term) {
-              evaluateAnswer(int.parse( myController.text));
-              myController.clear();
-            },
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
-            // Only numbers can be entered
+                  border: const OutlineInputBorder(),
+                  labelText: "You answer in Millions",
+                  fillColor: Colors.white),
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (term) {
+                evaluateAnswer(int.parse( myController.text));
+                myController.clear();
+              },
+              inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              // Only numbers can be entered
+            ),
           ),
         ),
         Expanded(
+          flex: 2,
           child: Padding(
             padding: EdgeInsets.all(15.0),
             child: FlatButton(
@@ -135,6 +139,10 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
         Row(children: scoreKeeper),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(child: Text(qb.explainAnswer())),
+        ),
       ],
     );
 

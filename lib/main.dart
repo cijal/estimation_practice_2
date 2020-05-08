@@ -150,7 +150,7 @@ class _QuizPageState extends State<QuizPage> {
           child: Center(child: Text(
               lastAnswerExplanation)),
         ),
-        Row(children: scoreKeeper),
+        Wrap(children: scoreKeeper),
       ],
     );
 

@@ -7,7 +7,7 @@ class Question {
 
    Question(){
     _qPercent = new Random().nextInt(80)+10;
-    _qBaseNum = (new Random().nextInt(99))*10;
+    _qBaseNum = (new Random().nextInt(99)+1)*10;
     _questionInWords = '$_qPercent% of $_qBaseNum Million?';
     _correctAnswer  =  (_qBaseNum*_qPercent)~/100;
     print('question is $_questionInWords');
